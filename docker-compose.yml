@@ -21,13 +21,23 @@ services:
       - NVIDIA_VISIBLE_DEVICES=all
       - NVIDIA_DRIVER_CAPABILITIES=compute,utility
     runtime: nvidia 
-    restart: unless-stopped
+    restart: always
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/v1/models"]
       interval: 30s
       timeout: 10s
       retries: 5
       start_period: 60s
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.llm.rule=Host(`caronboulme.fr`) && PathPrefix(`/llm`)"
+      - "traefik.http.routers.llm.entrypoints=websecure"
+      - "traefik.http.routers.llm.tls.certresolver=letsencrypt"
+      - "traefik.http.services.llm.loadbalancer.server.port=8000"
+      - "traefik.http.routers.llm.priority=200"
+    networks:
+      - unmute_default
+      - default
 
   # Optional: Service pour tester le serveur
   llama-client:
@@ -42,3 +52,7 @@ services:
     command: ["python", "test.py"]
     profiles:
       - test
+
+networks:
+  unmute_default:
+    external: true
