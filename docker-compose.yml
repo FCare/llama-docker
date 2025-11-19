@@ -35,6 +35,8 @@ services:
       - "traefik.http.routers.llm.tls.certresolver=letsencrypt"
       - "traefik.http.services.llm.loadbalancer.server.port=8000"
       - "traefik.http.routers.llm.priority=200"
+      - "traefik.http.routers.llm.middlewares=llm-stripprefix"
+      - "traefik.http.middlewares.llm-stripprefix.stripprefix.prefixes=/llm"
     networks:
       - unmute_default
 
