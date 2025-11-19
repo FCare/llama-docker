@@ -8,7 +8,7 @@ DEBUG = True
 
 client = openai.OpenAI(
     api_key = "sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", # can be anything
-    base_url = "http://localhost:9000/v1"
+    base_url = "https://caronboulme.fr/llm/v1"
 )
 client = instructor.patch(client=client)
 def get_current_weather(location, unit="fahrenheit"):

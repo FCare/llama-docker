@@ -37,21 +37,6 @@ services:
       - "traefik.http.routers.llm.priority=200"
     networks:
       - unmute_default
-      - default
-
-  # Optional: Service pour tester le serveur
-  llama-client:
-    build: .
-    container_name: llama-client
-    depends_on:
-      - llama-server
-    volumes:
-      - ./:/app
-    environment:
-      - PYTHONPATH=/app
-    command: ["python", "test.py"]
-    profiles:
-      - test
 
 networks:
   unmute_default:
