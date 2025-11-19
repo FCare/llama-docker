@@ -4,7 +4,7 @@ import instructor
 import re
 
 # Variable globale pour contrôler les messages de debug
-DEBUG = True
+DEBUG = False
 
 client = openai.OpenAI(
     api_key = "sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", # can be anything
