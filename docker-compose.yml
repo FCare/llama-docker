@@ -1,0 +1,44 @@
+services:
+  llama-server:
+    build: 
+      context: .
+      args:
+        - HTTP_PROXY=${HTTP_PROXY}
+        - HTTPS_PROXY=${HTTPS_PROXY}
+        - http_proxy=${http_proxy}
+        - https_proxy=${https_proxy}
+    container_name: llama-cpp-server
+    ports:
+      - "9000:8000"
+    # Model downloaded directly in container, no volume mapping needed
+    environment:
+      - HTTP_PROXY=
+      - HTTPS_PROXY=
+      - http_proxy=
+      - https_proxy=
+      - NO_PROXY=*
+      - no_proxy=*
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+    runtime: nvidia 
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/v1/models"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  # Optional: Service pour tester le serveur
+  llama-client:
+    build: .
+    container_name: llama-client
+    depends_on:
+      - llama-server
+    volumes:
+      - ./:/app
+    environment:
+      - PYTHONPATH=/app
+    command: ["python", "test.py"]
+    profiles:
+      - test

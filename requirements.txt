@@ -1,0 +1,5 @@
+openai
+instructor
+huggingface_hub[cli]
+transformers==4.36.0
+tokenizers==0.15.0
