@@ -65,6 +65,7 @@ CMD ["python", "-m", "llama_cpp.server", \
      "--model", "./model/functionary-small-v3.2.Q8_0.gguf", \
      "--chat_format", "functionary-v2", \
      "--hf_pretrained_model_name_or_path", "./model/", \
+     "--n_ctx", "24576", \
      "--n_gpu_layers", "-1", \
      "--host", "0.0.0.0", \
      "--port", "8000"]
